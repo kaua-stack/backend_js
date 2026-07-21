@@ -5,5 +5,7 @@ const enderecoRouter = express.Router();
 
 enderecoRouter.post('/', enderecoController.createEndereco);
 
+enderecoRouter.delete('/:endereco_id', enderecoController.enderecoDelete);
+
 
 export default enderecoRouter;

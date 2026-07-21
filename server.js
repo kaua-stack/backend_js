@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+
 import routeClientes from "./routes/clienteRoutes.js";
 import routeCategorias from "./routes/categoriaRoutes.js";
 import routeCompras from "./routes/compraRoutes.js";
@@ -10,6 +12,9 @@ import routeLivros from "./routes/livroRoutes.js";
 import routeUsers from "./routes/userRoutes.js";
 import loginRoute from "./routes/loginRoutes.js";
 import enderecoRouter from "./routes/enderecoRoutes.js";
+import uploadRouter from "./routes/uploadRoutes.js";
+import swaggerDocs from "./swagger.json" with {type : "json"};
+
 
 
 dotenv.config();
@@ -25,6 +30,9 @@ app.use(cors({
 app.use(cookieParser());
 
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+
 const PORT = process.env.PORT_SERVER || 6050;
 
 app.use("/clientes", routeClientes);
@@ -35,6 +43,7 @@ app.use("/compras", routeCompras);
 app.use("/users", routeUsers);
 app.use("/auth", loginRoute);
 app.use("/endereco", enderecoRouter);
+
 
 app.listen(PORT, () => {
     return console.log(`Servidor rodando http://localhost:${PORT}`);

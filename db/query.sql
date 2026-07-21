@@ -39,7 +39,7 @@ CREATE Table endereco (
     FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente)
 )
 
-
+drop table if exists endereco;
 
 INSERT INTO
     roles (role_name)

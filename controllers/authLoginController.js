@@ -9,7 +9,7 @@ dotenv.config();
 
 class AuthLoginController {
     async login(req, res) {
-        try {
+        // try {
             const { user_email, user_password } = req.body;
             const [emailExists] = await usersModel.selectUserByEmail(user_email)
             if (!emailExists) {
@@ -53,9 +53,9 @@ class AuthLoginController {
             console.log(res);
 
             return res.json({ success: "Login bem-sucedido!", accessToken: accessToken });
-        } catch (error) {
-            res.status(500).json({ error: `Erro ao realizar login! ${error.message}` });
-        }
+        // } catch (error) {
+        //     res.status(500).json({ error: `Erro ao realizar login! ${error.message}` });
+        // }
 
     }
 
@@ -111,39 +111,40 @@ class AuthLoginController {
         }
 
         return res.status(500).json({ error: "Erro ao deletar token" })
-    }
+    };
+    
+        // async login(req,res){
+        //         try {
+        //             const { user_email, user_password } = req.body;
 
-    //----------------------------------------------------------------------------------------------------------------------
-    // async login(req,res){
-    //     try {
-    //         const { user_email, user_password } = req.body;
+        //             const [user] = await userModel.selectUserByEmail(user_email);
 
-    //         const [user] = await userModel.selectUserByEmail(user_email);
+        //             if (!user) {
+        //                 return res.status(404).json({ error: "Usuário não encontrado!" });
+        //             }
 
-    //         if (!user) {
-    //             return res.status(404).json({ error: "Usuário não encontrado!" });
-    //         }
+        //             const isPasswordValid = await bcrypt.compare(user_password, user.user_password);
 
-    //         const isPasswordValid = await bcrypt.compare(user_password, user.user_password);
+        //             if (!isPasswordValid) {
+        //                 return res.status(401).json({ error: "Senha incorreta!" });
+        //             }
 
-    //         if (!isPasswordValid) {
-    //             return res.status(401).json({ error: "Senha incorreta!" });
-    //         }
+        //             const token = jwt.sign(
+        //                 { user_id: user.user_id, role_id: user.role_id },
 
-    //         const token = jwt.sign(
-    //             { user_id: user.user_id, role_id: user.role_id },
+        //                 //chave secreta protegida pegando do arquivo .env
+        //                 process.env.JWT_SECRET,
+        //                 { expiresIn: "1d" }
+        //             );
 
-    //             //chave secreta protegida pegando do arquivo .env
-    //             process.env.JWT_SECRET,
-    //             { expiresIn: "1d" }
-    //         );
+        //             //retorna o token para o frontend, para que ele possa usar nas próximas requisições
+        //             return res.status(200).json({ success: "Login bem-sucedido!", token: token });
+        //         } catch (error) {
+        //             return res.status(500).json({ error: `Erro ao realizar login! ${error.message}` });
+        //         }
+        //     }
 
-    //         //retorna o token para o frontend, para que ele possa usar nas próximas requisições
-    //         return res.status(200).json({ success: "Login bem-sucedido!", token: token });
-    //     } catch (error) {
-    //         return res.status(500).json({ error: `Erro ao realizar login! ${error.message}` });
-    //     }
-    // }
+
 
 
     // async changePassword(req,res){

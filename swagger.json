@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Livraria",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de uma livraria, incluindo clientes, categorias, compras, produtos, usuários e autenticação."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:6050",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "description": "Autentica usuário e retorna um token JWT.",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email do usuário",
+                    "example": "exemplo@dominio.com"
+                  },
+                  "user_password": {
+                    "type": "string",
+                    "format": "password",
+                    "description": "Senha do usuário",
+                    "example": "senha123@S"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Token JWT para autenticação",
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh token de acesso",
+        "description": "Atualiza o token de acesso usando o token de atualização.",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+  
+                    "description": "Token de atualização",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                  }
+                  
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Token JWT para autenticação",
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@ class GenerateTokens {
                 email: user.user_email,
                 role: user.role_name,
             },
-            process.env.JWT_SECRET,
+            process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "15m" },
         );
 
@@ -30,4 +30,5 @@ class GenerateTokens {
         return refreshToken;
     }
 }
+
 export default new GenerateTokens();
