@@ -27,8 +27,7 @@ class UserController {
 
             const userById = await userModel.selectUserById(user_id);
 
-            console.log(user_id);
-            console.log(userById);
+           
 
             if (userById.length === 0) {
                 return res.status(404).json({

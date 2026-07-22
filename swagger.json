@@ -24,21 +24,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "user_email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email do usuário",
-                    "example": "exemplo@dominio.com"
-                  },
-                  "user_password": {
-                    "type": "string",
-                    "format": "password",
-                    "description": "Senha do usuário",
-                    "example": "senha123@S"
-                  }
-                }
+                "$ref": "#/components/schemas/login"
+              },
+              "example": {
+                "user_email": "exemplo@dominio.com",
+                "user_password": "senha123@S"
               }
             }
           }
@@ -69,59 +59,104 @@
       }
     },
 
+
     "/auth/refresh": {
-      "post": {
-        "summary": "Refresh token de acesso",
-        "description": "Atualiza o token de acesso usando o token de atualização.",
-        "tags": [
-          "Autenticação"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "token": {
-                    "type": "string",
-  
-                    "description": "Token de atualização",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                  }
-                  
-                }
+  "post": {
+    "summary": "Refresh token de acesso",
+    "description": "Atualiza o token de acesso usando o token de refresh.",
+    "tags": [
+      "Autenticação"
+    ],
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "required": ["token"],
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "Token de refresh",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login bem-sucedido",
-            "headers": {
-              "Set-Cookie": {
-                "description": "Token JWT para autenticação",
-                "schema": {
-                  "type": "string",
-                  "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Credenciais inválidas"
-          },
-          "404": {
-            "description": "Usuário não encontrado"
-          },
-          "500": {
-            "description": "Erro interno do servidor"
           }
         }
       }
+    },
+    "responses": {
+      "200": {
+        "description": "Token atualizado com sucesso",
+        "headers": {
+          "Set-Cookie": {
+            "description": "Novo token JWT armazenado em cookie",
+            "schema": {
+              "type": "string",
+              "example": "accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Token de refresh não informado ou requisição inválida"
+      },
+      "401": {
+        "description": "Token de refresh inválido ou expirado"
+      },
+      "500": {
+        "description": "Erro interno do servidor"
+      }
     }
+  }
+    },
+
+
+    "/auth/logout": {
+  "post": {
+    "summary": "Logout de usuário",
+    "description": "Encerra a sessão do usuário e invalida o token JWT.",
+    "tags": [
+      "Autenticação"
+    ],
+    "responses": {
+      "200": {
+        "description": "Logout bem-sucedido"
+      },
+      "401": {
+        "description": "Usuário não autenticado"
+      },
+      "500": {
+        "description": "Erro interno do servidor"
+      }
+    }
+  }
+    }
+
+
+
+
+
+
+
+
   },
   "components": {
+    "schemas": {
+      "login": {
+        "type": "object",
+        "properties": {
+          "user_email": {
+            "type": "string",
+            "description": "Email do usuário"
+          },
+          "user_password": {
+            "type": "string"
+          }
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
@@ -130,4 +165,3 @@
       }
     }
   }
-}

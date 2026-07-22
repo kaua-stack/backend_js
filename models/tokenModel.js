@@ -1,9 +1,10 @@
 import pool from "../db/database.js";
 
+
 class TokkenModel{
     async createToken(tokenData){
         const {token, user_id, expires_at} = tokenData;
-        const [result] = await pool.execute("INSERT INTO tokens (token,user_id,expires_at) VALUES (?,?,?);",[token,user_id,expires_at]);
+        const [result] = await pool.execute("INSERT INTO tokens ( token, expires_at, user_id) VALUES (?,?,?);",[token, expires_at, user_id]);
         return result;
     }
 
