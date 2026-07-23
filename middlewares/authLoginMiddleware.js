@@ -8,15 +8,23 @@ dotenv.config()
 export const authenticationToken = (req, res, next) => {
 
     const getToken = req.headers.authorization;
-    const bearerTokken = getToken.split(" ")[1];
+    
+    if(!getToken){
 
+        return res.status(401).json({
+            error:" token nao fornecido!"
+        });
+    }
+
+
+    const bearerTokken = getToken.split(" ")[1];
     if (!bearerTokken) {
         return res.status(401).json({ error: "Token não fornecido" })
     }
 
 
     //
-    jwt.verify(bearerTokken, process.env.JWT_SECRET, (error, user) => {
+    jwt.verify(bearerTokken, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
         if (error) {
             return res.status(403).json({ error: "Token inválido!" })
         }
